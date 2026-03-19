@@ -1,0 +1,41 @@
+book_id,title,author,genre,rating,description
+1,Good Omens,Terry Pratchett,Comedy,4.3,A hilarious collaboration about the apocalypse
+2,The Hitchhiker's Guide to the Galaxy,Douglas Adams,Comedy,4.2,The funniest science fiction comedy ever written
+3,Bridget Jones's Diary,Helen Fielding,Comedy,3.9,A hilarious diary of a single woman in London
+4,Me Talk Pretty One Day,David Sedaris,Comedy,4.1,Witty and self-deprecating essays about life
+5,Bossypants,Tina Fey,Comedy,4.0,Hilarious memoir about comedy and motherhood
+6,Yes Please,Amy Poehler,Comedy,3.8,Funny memoir about life and career
+7,Catch-22,Joseph Heller,Comedy,4.2,A darkly comic novel about the absurdity of war
+8,The Rosie Project,Graeme Simsion,Comedy,4.0,A romantic comedy about a genetics professor seeking love
+9,"Where'd You Go, Bernadette",Maria Semple,Comedy,3.9,A witty novel about a missing mother and family dysfunction
+10,A Confederacy of Dunces,John Kennedy Toole,Comedy,4.1,A comic masterpiece about an eccentric man in New Orleans
+11,The Lord of the Rings,J.R.R. Tolkien,Fantasy,4.5,An epic fantasy adventure in Middle-earth
+12,Harry Potter,J.K. Rowling,Fantasy,4.4,A magical story about a young wizard
+13,Game of Thrones,George R.R. Martin,Fantasy,4.3,"Epic fantasy about power, politics, and dragons"
+14,The Name of the Wind,Patrick Rothfuss,Fantasy,4.2,A beautifully written fantasy about music and magic
+15,Mistborn,Brandon Sanderson,Fantasy,4.4,Epic fantasy with unique magic system
+16,Dune,Frank Herbert,Science Fiction,4.2,A science fiction epic about desert planet Arrakis
+17,Foundation,Isaac Asimov,Science Fiction,4.1,A science fiction series about galactic empire
+18,The Martian,Andy Weir,Science Fiction,4.3,A survival story about an astronaut stranded on Mars
+19,Neuromancer,William Gibson,Science Fiction,3.9,A cyberpunk novel about virtual reality
+20,Ender's Game,Orson Scott Card,Science Fiction,4.0,A military science fiction novel about child soldiers
+21,Gone Girl,Gillian Flynn,Mystery,4.1,A psychological thriller about a marriage gone wrong
+22,The Girl with the Dragon Tattoo,Stieg Larsson,Mystery,4.2,A gripping thriller about investigating murders
+23,Sherlock Holmes,Arthur Conan Doyle,Mystery,4.3,Classic detective stories featuring brilliant detective
+24,The Da Vinci Code,Dan Brown,Mystery,3.8,A mystery involving religious symbols and secrets
+25,Big Little Lies,Liane Moriarty,Mystery,4.0,A mystery about three women and their dark secrets
+26,Pride and Prejudice,Jane Austen,Romance,4.0,A romantic novel about manners and marriage
+27,The Notebook,Nicholas Sparks,Romance,4.1,A tearjerker romance about enduring love
+28,Me Before You,Jojo Moyes,Romance,4.2,A heartbreaking romance about love and loss
+29,Outlander,Diana Gabaldon,Romance,4.3,A time-traveling historical romance
+30,The Hating Game,Sally Thorne,Romance,4.0,A workplace enemies-to-lovers romance
+31,The Shining,Stephen King,Horror,4.2,A terrifying horror novel about a haunted hotel
+32,Dracula,Bram Stoker,Horror,4.0,The classic vampire novel that started it all
+33,Frankenstein,Mary Shelley,Horror,3.9,The original monster story about science and creation
+34,It,Stephen King,Horror,4.1,A horror novel about a shape-shifting entity
+35,The Exorcist,William Peter Blatty,Horror,4.0,A chilling horror novel about demonic possession
+36,To Kill a Mockingbird,Harper Lee,Classic,4.3,A story of racial injustice and childhood innocence
+37,1984,George Orwell,Classic,4.1,A dystopian novel about totalitarian control
+38,The Great Gatsby,F. Scott Fitzgerald,Classic,4.2,A classic American novel about the Jazz Age
+39,The Catcher in the Rye,J.D. Salinger,Classic,3.8,A coming-of-age story in New York
+40,Lord of the Flies,William Golding,Classic,3.9,A novel about civilization and savagery

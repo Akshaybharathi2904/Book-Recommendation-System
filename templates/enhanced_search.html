@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Search Results - Book Discovery Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            color: #333;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .search-summary {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .summary-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .search-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .filter-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .results-info {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .sort-filter-bar {
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .sort-btn {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .sort-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 5px;
+        }
+
+        .view-btn {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .books-list {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .book-info {
+            padding: 20px;
+        }
+
+        .book-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .book-genre {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+
+        .book-year {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .book-rating-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .book-price {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .book-list-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .book-list-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .list-book-cover {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .list-book-info {
+            flex: 1;
+        }
+
+        .list-book-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .list-book-author {
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .list-book-description {
+            color: #777;
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .list-book-meta {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 40px 0;
+        }
+
+        .page-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .page-btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+
+        .no-results-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .no-results-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .no-results-text {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .back-to-home {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .back-to-home:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .search-bar {
+                max-width: 100%;
+            }
+            
+            .sort-filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .sort-options {
+                justify-content: center;
+            }
+            
+            .view-toggle {
+                justify-content: center;
+            }
+            
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            .book-list-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .list-book-cover {
+                align-self: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <a href="/" class="logo">📚 Book Discovery Hub</a>
+            
+            <form class="search-bar" action="/search" method="GET">
+                <input type="text" name="book_name" placeholder="Search books..." class="search-input" 
+                       value="{{ search_params.book_name or '' }}">
+                <button type="submit" class="search-btn">🔍</button>
+            </form>
+            
+            <div class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/stats">📊 Stats</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Search Summary -->
+        <div class="search-summary">
+            <h1 class="summary-title">
+                {% if total_books > 0 %}
+                    📚 Found {{ total_books }} book{{ 's' if total_books != 1 else '' }}
+                {% else %}
+                    🔍 No books found
+                {% endif %}
+            </h1>
+            
+            {% if search_params.book_name or search_params.author or search_params.genre or search_params.min_rating or search_params.max_price %}
+            <div class="search-filters">
+                {% if search_params.book_name %}
+                <div class="filter-tag">📖 Title: "{{ search_params.book_name }}"</div>
+                {% endif %}
+                {% if search_params.author %}
+                <div class="filter-tag">✍️ Author: "{{ search_params.author }}"</div>
+                {% endif %}
+                {% if search_params.genre %}
+                <div class="filter-tag">🎭 Genre: {{ search_params.genre }}</div>
+                {% endif %}
+                {% if search_params.min_rating %}
+                <div class="filter-tag">⭐ Rating: {{ search_params.min_rating }}+</div>
+                {% endif %}
+                {% if search_params.max_price %}
+                <div class="filter-tag">💰 Price: Under ${{ search_params.max_price }}</div>
+                {% endif %}
+            </div>
+            {% endif %}
+            
+            {% if total_books > 0 %}
+            <div class="results-info">
+                Showing page {{ page }} of {{ total_pages }} • Sorted by rating (highest first)
+            </div>
+            {% endif %}
+        </div>
+
+        {% if total_books > 0 %}
+        <!-- Sort and Filter Bar -->
+        <div class="sort-filter-bar">
+            <div class="sort-options">
+                <span style="margin-right: 10px; font-weight: bold;">Sort by:</span>
+                <button class="sort-btn active">⭐ Rating</button>
+                <button class="sort-btn">💰 Price</button>
+                <button class="sort-btn">📅 Year</button>
+                <button class="sort-btn">📖 Title</button>
+            </div>
+            
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="toggleView('grid')" title="Grid View">⊞</button>
+                <button class="view-btn" onclick="toggleView('list')" title="List View">☰</button>
+            </div>
+        </div>
+
+        <!-- Books Grid View -->
+        <div id="books-grid" class="books-grid">
+            {% for book in books %}
+            <div class="book-card" onclick="window.location.href='/book/{{ book.book_id }}'">
+                <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="book-cover" 
+                     onerror="this.src='https://via.placeholder.com/300x400/667eea/white?text=📚'">
+                <div class="book-info">
+                    <div class="book-title">{{ book.title }}</div>
+                    <div class="book-author">by {{ book.author }}</div>
+                    <div class="book-meta">
+                        <div class="book-genre">{{ book.genre }}</div>
+                        <div class="book-year">{{ book.year }}</div>
+                    </div>
+                    <div class="book-rating-price">
+                        <div class="book-rating">
+                            <span>⭐</span>
+                            <span>{{ "%.1f"|format(book.rating) }}</span>
+                        </div>
+                        <div class="book-price">${{ "%.2f"|format(book.price) }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Books List View -->
+        <div id="books-list" class="books-list">
+            {% for book in books %}
+            <div class="book-list-item" onclick="window.location.href='/book/{{ book.book_id }}'">
+                <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="list-book-cover"
+                     onerror="this.src='https://via.placeholder.com/80x120/667eea/white?text=📚'">
+                <div class="list-book-info">
+                    <div class="list-book-title">{{ book.title }}</div>
+                    <div class="list-book-author">by {{ book.author }}</div>
+                    <div class="list-book-description">{{ book.description }}</div>
+                    <div class="list-book-meta">
+                        <div class="book-genre">{{ book.genre }}</div>
+                        <div class="book-rating">⭐ {{ "%.1f"|format(book.rating) }}</div>
+                        <div class="book-price">${{ "%.2f"|format(book.price) }}</div>
+                        <div class="book-year">{{ book.year }}</div>
+                        <div style="color: #888;">{{ book.pages }} pages</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <div class="pagination">
+            {% if page > 1 %}
+            <a href="?{{ request.query_string.decode() | replace('page=' + page|string, 'page=' + (page-1)|string) }}" class="page-btn">← Previous</a>
+            {% endif %}
+            
+            {% for p in range(1, total_pages + 1) %}
+                {% if p == page %}
+                <span class="page-btn active">{{ p }}</span>
+                {% elif p <= 3 or p >= total_pages - 2 or (p >= page - 1 and p <= page + 1) %}
+                <a href="?{{ request.query_string.decode() | replace('page=' + page|string, 'page=' + p|string) }}" class="page-btn">{{ p }}</a>
+                {% elif p == 4 and page > 6 %}
+                <span class="page-btn">...</span>
+                {% elif p == total_pages - 3 and page < total_pages - 5 %}
+                <span class="page-btn">...</span>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page < total_pages %}
+            <a href="?{{ request.query_string.decode() | replace('page=' + page|string, 'page=' + (page+1)|string) }}" class="page-btn">Next →</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- No Results -->
+        <div class="no-results">
+            <div class="no-results-icon">😔</div>
+            <div class="no-results-title">No books found</div>
+            <div class="no-results-text">
+                Try adjusting your search criteria or browse our collection by genre.
+            </div>
+            <a href="/" class="back-to-home">🏠 Back to Home</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function toggleView(viewType) {
+            const gridView = document.getElementById('books-grid');
+            const listView = document.getElementById('books-list');
+            const gridBtn = document.querySelector('.view-btn[onclick="toggleView(\'grid\')"]');
+            const listBtn = document.querySelector('.view-btn[onclick="toggleView(\'list\')"]');
+            
+            if (viewType === 'grid') {
+                gridView.style.display = 'grid';
+                listView.style.display = 'none';
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+            } else {
+                gridView.style.display = 'none';
+                listView.style.display = 'flex';
+                listBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+            }
+        }
+
+        // Sort functionality (placeholder - would need backend implementation)
+        document.querySelectorAll('.sort-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                // Here you would implement actual sorting logic
+            });
+        });
+
+        // Add loading animation for book covers
+        document.querySelectorAll('.book-cover, .list-book-cover').forEach(img => {
+            img.addEventListener('load', function() {
+                this.style.opacity = '1';
+            });
+            img.style.opacity = '0';
+            img.style.transition = 'opacity 0.3s ease';
+        });
+    </script>
+</body>
+</html>

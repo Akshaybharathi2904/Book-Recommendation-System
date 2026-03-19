@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>📊 Statistics - Book Recommendation System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: rgba(255, 255, 255, 0.95); 
+            padding: 30px; 
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .header h1 {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+        }
+        
+        .back-btn { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; 
+            padding: 12px 25px; 
+            border: none; 
+            border-radius: 25px; 
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 40px; 
+        }
+        
+        .stat-card { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card h3 { 
+            font-size: 2.5em; 
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .stat-card p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .genre-stats { 
+            margin-top: 30px; 
+        }
+        
+        .genre-stats h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 2em;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .genre-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 15px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .genre-table th { 
+            padding: 20px; 
+            text-align: left; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .genre-table td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #eee;
+            font-size: 1em;
+        }
+        
+        .genre-table tr:hover { 
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .genre-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .genre-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .rating-badge {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .price-badge {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .count-badge {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .chart-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .chart-section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Database Statistics</h1>
+            <a href="/" class="back-btn">← Back to Home</a>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>{{ stats.total_books }}</h3>
+                <p>📚 Total Books</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ stats.genres }}</h3>
+                <p>🎭 Genres</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ stats.avg_rating }}★</h3>
+                <p>⭐ Average Rating</p>
+            </div>
+            <div class="stat-card">
+                <h3>${{ stats.avg_price }}</h3>
+                <p>💰 Average Price</p>
+            </div>
+        </div>
+        
+        <div class="genre-stats">
+            <h2>📈 Genre Statistics</h2>
+            <table class="genre-table">
+                <thead>
+                    <tr>
+                        <th>🎭 Genre</th>
+                        <th>📚 Books Count</th>
+                        <th>⭐ Average Rating</th>
+                        <th>💰 Average Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for genre in stats.genre_stats.rating.count.keys() %}
+                    <tr>
+                        <td class="genre-name">
+                            {% if genre == 'Comedy' %}😂 Comedy
+                            {% elif genre == 'Fantasy' %}🧙♂️ Fantasy
+                            {% elif genre == 'Science Fiction' %}🚀 Science Fiction
+                            {% elif genre == 'Mystery' %}🔍 Mystery
+                            {% elif genre == 'Romance' %}💕 Romance
+                            {% elif genre == 'Horror' %}👻 Horror
+                            {% elif genre == 'Classic' %}📜 Classic
+                            {% else %}📚 {{ genre }}
+                            {% endif %}
+                        </td>
+                        <td><span class="count-badge">{{ stats.genre_stats.rating.count[genre] }}</span></td>
+                        <td><span class="rating-badge">{{ "%.1f"|format(stats.genre_stats.rating.mean[genre]) }}★</span></td>
+                        <td><span class="price-badge">${{ "%.2f"|format(stats.genre_stats.price.mean[genre]) }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="chart-section">
+            <h3>📊 Quick Facts</h3>
+            <p style="font-size: 1.1em; color: #666; line-height: 1.6;">
+                Our database contains <strong>{{ stats.total_books }}</strong> carefully curated books across 
+                <strong>{{ stats.genres }}</strong> different genres. With an average rating of 
+                <strong>{{ stats.avg_rating }}★</strong> and average price of <strong>${{ stats.avg_price }}</strong>, 
+                you'll find quality books at great prices!
+            </p>
+        </div>
+    </div>
+</body>
+</html>

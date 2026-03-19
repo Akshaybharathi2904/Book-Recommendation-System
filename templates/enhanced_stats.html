@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Statistics - Book Discovery Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            color: white;
+            font-size: 3em;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: all 0.5s;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .stat-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chart-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .chart-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .genre-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .genre-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .genre-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .genre-emoji {
+            font-size: 1.5em;
+        }
+
+        .genre-info {
+            flex: 1;
+        }
+
+        .genre-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .genre-details {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .genre-bar {
+            width: 100px;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .genre-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .price-ranges {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .price-item:hover {
+            background: #e9ecef;
+            transform: scale(1.02);
+        }
+
+        .price-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .price-count {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .top-books-section {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .top-books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .top-book-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            gap: 15px;
+        }
+
+        .top-book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .book-rank {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .book-info {
+            flex: 1;
+        }
+
+        .book-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .book-author {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .book-meta {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .book-rating {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .book-genre {
+            background: #e9ecef;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .book-price {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .insights-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .insight-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .insight-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .insight-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .insight-text {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2em;
+            }
+            
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .insights-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-book-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <a href="/" class="logo">📚 Book Discovery Hub</a>
+            
+            <div class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/search?genre=all">📚 Browse</a>
+                <a href="/stats" style="background: rgba(255,255,255,0.2);">📊 Stats</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1 class="page-title">📊 Book Collection Statistics</h1>
+
+        <!-- Overview Stats -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-number">{{ stats.total_books }}</div>
+                <div class="stat-label">Total Books</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🎭</div>
+                <div class="stat-number">{{ stats.genres }}</div>
+                <div class="stat-label">Genres</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-number">{{ stats.avg_rating }}</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-number">${{ stats.avg_price }}</div>
+                <div class="stat-label">Average Price</div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <!-- Genre Statistics -->
+            <div class="chart-card">
+                <h2 class="chart-title">
+                    <span>🎭</span>
+                    <span>Books by Genre</span>
+                </h2>
+                <div class="genre-stats">
+                    {% set max_count = stats.genre_stats.rating.count.values() | list | max %}
+                    {% for genre, count in stats.genre_stats.rating.count.items() %}
+                    <div class="genre-item">
+                        <div class="genre-emoji">
+                            {% if genre == 'Comedy' %}😂
+                            {% elif genre == 'Fantasy' %}🧙♂️
+                            {% elif genre == 'Science Fiction' %}🚀
+                            {% elif genre == 'Mystery' %}🔍
+                            {% elif genre == 'Romance' %}💕
+                            {% elif genre == 'Horror' %}👻
+                            {% elif genre == 'Classic' %}📜
+                            {% else %}📚
+                            {% endif %}
+                        </div>
+                        <div class="genre-info">
+                            <div class="genre-name">{{ genre }}</div>
+                            <div class="genre-details">
+                                {{ count }} books • Avg rating: {{ "%.1f"|format(stats.genre_stats.rating.mean[genre]) }}⭐
+                            </div>
+                        </div>
+                        <div class="genre-bar">
+                            <div class="genre-fill" style="width: {{ (count / max_count * 100)|round }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Price Ranges -->
+            <div class="chart-card">
+                <h2 class="chart-title">
+                    <span>💰</span>
+                    <span>Price Distribution</span>
+                </h2>
+                <div class="price-ranges">
+                    {% for range, count in stats.price_ranges.items() %}
+                    <div class="price-item">
+                        <div class="price-label">{{ range }}</div>
+                        <div class="price-count">{{ count }} books</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Rated Books -->
+        <div class="top-books-section">
+            <h2 class="section-title">
+                <span>🏆</span>
+                <span>Top 10 Highest Rated Books</span>
+                <span>🏆</span>
+            </h2>
+            
+            <div class="top-books-grid">
+                {% for book in stats.top_rated[:10] %}
+                <div class="top-book-card" onclick="window.location.href='/book/{{ book.book_id }}'">
+                    <div class="book-rank">{{ loop.index }}</div>
+                    <div class="book-info">
+                        <div class="book-title">{{ book.title }}</div>
+                        <div class="book-author">by {{ book.author }}</div>
+                        <div class="book-meta">
+                            <div class="book-rating">⭐ {{ "%.1f"|format(book.rating) }}</div>
+                            <div class="book-genre">{{ book.genre }}</div>
+                            <div class="book-price">${{ "%.2f"|format(book.price) }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Insights -->
+        <div class="insights-section">
+            <div class="insight-card">
+                <div class="insight-icon">📈</div>
+                <div class="insight-title">Collection Growth</div>
+                <div class="insight-text">
+                    Our library spans multiple decades with books from 1950 to 2024, 
+                    showing a diverse collection that covers both classic and contemporary literature.
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-icon">🎯</div>
+                <div class="insight-title">Quality Focus</div>
+                <div class="insight-text">
+                    With an average rating of {{ stats.avg_rating }} stars, our collection 
+                    maintains high quality standards across all genres.
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-icon">💡</div>
+                <div class="insight-title">Diverse Selection</div>
+                <div class="insight-text">
+                    {{ stats.genres }} different genres ensure there's something for every reader, 
+                    from comedy to science fiction to classic literature.
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-icon">🏷️</div>
+                <div class="insight-title">Affordable Options</div>
+                <div class="insight-text">
+                    With an average price of ${{ stats.avg_price }}, we offer quality books 
+                    at accessible prices for all readers.
+                </div>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="back-button">
+            <a href="/" class="back-btn">🏠 Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Animate genre bars on load
+        window.addEventListener('load', function() {
+            const genreFills = document.querySelectorAll('.genre-fill');
+            genreFills.forEach((fill, index) => {
+                setTimeout(() => {
+                    fill.style.width = fill.style.width;
+                }, index * 100);
+            });
+        });
+
+        // Add hover effects to stat cards
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                this.style.color = 'white';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.background = 'rgba(255,255,255,0.95)';
+                this.style.color = '';
+            });
+        });
+
+        // Smooth scrolling for any anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
